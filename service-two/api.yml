@@ -1,0 +1,185 @@
+openapi: 3.0.0
+info:
+  title: Reply API
+  description: Create replies for intents
+  version: '1.0'
+  contact: {}
+tags:
+  - name: api
+    description: ''
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    CreateReplyDto:
+      type: object
+      properties:
+        intent:
+          type: string
+        replies:
+          type: array
+          items:
+            type: string
+      required:
+        - intent
+        - replies
+    AddReplyDto:
+      type: object
+      properties:
+        reply:
+          type: string
+      required:
+        - reply
+paths:
+  /api/reply:
+    get:
+      operationId: ReplyController_getAllReplies
+      parameters: []
+      responses:
+        '200':
+          description: Returns all replies in database
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreateReplyDto'
+      tags:
+        - api/reply
+    post:
+      operationId: ReplyController_createReply
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReplyDto'
+      responses:
+        '200':
+          description: Create one reply object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReplyDto'
+      tags:
+        - api/reply
+  '/api/reply/{id}':
+    get:
+      operationId: ReplyController_getReply
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Returns one reply object for an :id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReplyDto'
+      tags:
+        - api/reply
+    delete:
+      operationId: ReplyController_deleteReply
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Deletes one reply object for an :id'
+      tags:
+        - api/reply
+    put:
+      operationId: ReplyController_updateReply
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReplyDto'
+      responses:
+        '200':
+          description: 'Updates one reply object for an :id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReplyDto'
+      tags:
+        - api/reply
+  '/api/reply/{id}/intent':
+    patch:
+      operationId: ReplyController_addMessageToIntent
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddReplyDto'
+      responses:
+        '200':
+          description: Adds a reply against intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReplyDto'
+      tags:
+        - api/reply
+  '/api/reply/intent/{intent}/message':
+    get:
+      operationId: ReplyController_getRandomMessageByIntent
+      parameters:
+        - name: intent
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns a random message for a given intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+      tags:
+        - api/reply
+  '/api/reply/intent/{intent}':
+    get:
+      operationId: ReplyController_getByIntent
+      parameters:
+        - name: intent
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns a reply object by intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReplyDto'
+      tags:
+        - api/reply
+

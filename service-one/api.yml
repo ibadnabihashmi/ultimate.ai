@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info:
+  title: Chat bot API
+  description: The chat bot API description
+  version: '1.0'
+  contact: {}
+tags:
+  - name: chat
+    description: ''
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    MessageDto:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+paths:
+  /api/message:
+    post:
+      operationId: AppController_postMessage
+      summary: Get reply for a message
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageDto'
+      responses:
+        '200':
+          description: reply for the message
+      tags:
+        - chat
+
